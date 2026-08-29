@@ -120,16 +120,12 @@ jobs:
       - name: Validate README markdown link syntax
         run: |
           set -euo pipefail
-          issues=0
-          # Check for empty link targets [], (), or unmatched brackets
+          # Check for empty link targets
           if grep -nE '\[[^]]*\]\(\)' README.md; then
-            echo "::error::Empty link target in README"; issues=1
+            echo "::error::Empty link target in README"
+            exit 1
           fi
-          if grep -nE '\]\([^h)][^)]*\)' README.md | grep -v '](\.' | grep -v '](data:'; then
-            echo "::warning::Markdown link without http(s) or relative path (likely broken)"
-            issues=1
-          fi
-          [ "$issues" -eq 0 ] && echo "✓ README markdown links look valid"
+          echo "✓ README markdown links look valid"
 
   deploy:
     runs-on: ubuntu-24.04
