@@ -411,7 +411,8 @@ footer a:hover { color: var(--color-focus); }
   display: flex;
   gap: 0.75rem;
   width: max-content;
-  animation: glide 32s linear infinite;
+  animation: glide 20s linear infinite;
+  will-change: transform;
 }
 
 .glide-track:hover .glide-rail { animation-play-state: paused; }
@@ -429,9 +430,11 @@ footer a:hover { color: var(--color-focus); }
   text-decoration: none;
   transition: transform var(--transition), border-color var(--transition);
 }
-.glide-card:hover {
+.glide-card:hover,
+.glide-card:focus-visible {
   transform: translateY(-2px);
   border-color: var(--color-accent);
+  outline: none;
 }
 .glide-mark {
   font-size: 1.4rem;
@@ -457,7 +460,19 @@ footer a:hover { color: var(--color-focus); }
   to   { transform: translateX(-50%); }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .glide-rail { will-change: transform; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .glide-rail { animation: none; flex-wrap: wrap; }
-  .glide-track { -webkit-mask-image: none; mask-image: none; }
+  .glide-track {
+    -webkit-mask-image: none;
+            mask-image: none;
+    overflow-x: auto;
+  }
+  .glide-rail {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
 }
