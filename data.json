@@ -1,0 +1,36 @@
+{
+  "name": "Open Stage Island",
+  "description": "Explore this evolving music community in a natural setting where you bring the magic! Join the party, attend DJ school and dance your avatar's bottom off! Discover freebies and interactive experiences, make friends since 2021. The open air stage is available 24/7 to all electronic music artists to get live audience feedback; DJs and producers show their skills. This magical realism venue has grown over the past years to become a social hub. Newcomers, LGBTQI+ and furries are welcome!",
+  "url": "https://secondlife.com/destination/open-stage-island",
+  "region": "Derwent",
+  "coordinates": {
+    "x": 248,
+    "y": 128,
+    "z": 22
+  },
+  "slurl": "secondlife://Derwent/248/128/22",
+  "maps_url": "https://maps.secondlife.com/secondlife/Derwent/248/128/22",
+  "maturity_rating": "Moderate",
+  "category": "Music",
+  "established": 2021,
+  "features": [
+    "24/7 Open Air Stage",
+    "DJ School",
+    "Freebies",
+    "Interactive Experiences",
+    "Social Hub",
+    "Live DJ Performances"
+  ],
+  "community": [
+    "Newcomers Welcome",
+    "LGBTQI+ Friendly",
+    "Furry Friendly"
+  ],
+  "image": {
+    "url": "https://cdn.prod.website-files.com/60b00c7676794f6159eb4bf0/6818b14c9914eb3376692033_6818b13e1d51c647434435.png",
+    "local": "images/destination-image.png",
+    "alt": "Open Stage Island destination preview"
+  },
+  "last_scraped": "2026-08-29",
+  "page_last_published": "2026-08-28T17:20:14Z"
+}
