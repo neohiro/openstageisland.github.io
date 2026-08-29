@@ -31,6 +31,8 @@
   "image": {
     "source_url": "https://cdn.prod.website-files.com/60b00c7676794f6159eb4bf0/6818b14c9914eb3376692033_6818b13e1d51c647434435.png",
     "local_path": "images/destination-image.png",
+    "width_px": 657,
+    "height_px": 394,
     "alt": "Avatars gathered at the Open Stage Island outdoor music venue under laser lights",
     "credit": "Second Life Destination Guide (secondlife.com)",
     "license_note": "Image downloaded from Second Life's official destination page; used here for documentation/fair-use commentary."

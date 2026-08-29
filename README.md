@@ -8,7 +8,7 @@
 
 ## About
 
-**Open Stage Island** is an evolving music community in Second Life, set in a beautiful natural environment where the magic is brought by you! Established since 2021, this destination has grown into a vibrant social hub.
+**Open Stage Island** is an evolving music community in Second Life, set in a beautiful natural environment where the magic is brought by you! According to the destination's public description, it has been operating since 2021 and has grown into a vibrant social hub.
 
 ### What Makes Open Stage Island Special?
 
@@ -26,7 +26,7 @@
 | **Coordinates** | 248/128/22 |
 | **Maturity Rating** | Moderate |
 | **Category** | Music |
-| **In Operation Since** | 2021 |
+| **In Operation Since** | 2021 *(per destination description)* |
 
 ## Teleport There
 
@@ -103,7 +103,9 @@ This is an open documentation project. If you have information to add or correct
 
 ## License
 
-This documentation is provided for informational purposes. All Second Life and Open Stage Island content belongs to their respective owners.
+This repository's source files (HTML, CSS, JSON, YAML, Markdown) are released under the [MIT License](LICENSE).
+
+Note: the destination preview image and quoted description are sourced from Second Life's official destination page and remain the property of their respective owners; see [LICENSE](LICENSE) for full attribution.
 
 ---
 

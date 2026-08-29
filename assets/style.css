@@ -11,6 +11,9 @@
   --max-content: 800px;
   --radius: 8px;
   --transition: 0.2s ease;
+  --hero-aspect: 5 / 3;
+  --hero-max-height: 500px;
+  --nav-height: 56px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,10 +38,14 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+    scroll-padding-top: 0;
+  }
   *,
   *::before,
   *::after {
@@ -80,29 +87,33 @@ a:hover { color: var(--color-accent-hover); text-decoration: underline; }
 }
 
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -40px;
-  left: 0;
+  left: 0.5rem;
   padding: 0.5rem 1rem;
   background: var(--color-heading);
   color: #fff;
-  z-index: 100;
+  z-index: 1000;
   transition: top var(--transition);
 }
-.skip-link:focus { top: 0; color: #fff; text-decoration: none; }
+.skip-link:focus {
+  top: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+}
 
 .hero {
   position: relative;
   width: 100%;
-  max-height: 500px;
+  max-height: var(--hero-max-height);
+  aspect-ratio: var(--hero-aspect);
   overflow: hidden;
   background: #000;
 }
 
 .hero-image {
   width: 100%;
-  height: auto;
-  max-height: 500px;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -156,6 +167,7 @@ a:hover { color: var(--color-accent-hover); text-decoration: underline; }
   color: #fff;
   border-radius: var(--radius);
   font-weight: 600;
+  border: 2px solid transparent;
   transition: background var(--transition), transform var(--transition);
 }
 .cta-button:hover,
@@ -167,19 +179,21 @@ a:hover { color: var(--color-accent-hover); text-decoration: underline; }
 }
 .cta-secondary {
   background: transparent;
-  border: 2px solid #fff;
+  border-color: #fff;
 }
 .cta-secondary:hover,
 .cta-secondary:focus-visible {
   background: rgba(255,255,255,0.15);
+  border-color: var(--color-focus);
 }
 
 .page-nav {
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
   position: sticky;
   top: 0;
   z-index: 10;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  min-height: var(--nav-height);
 }
 .page-nav ul {
   list-style: none;
@@ -221,6 +235,10 @@ section h2 {
   border-bottom: 2px solid var(--color-accent);
 }
 
+section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 0.5rem);
+}
+
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -258,7 +276,13 @@ section h2 {
   font-weight: 600;
   color: var(--color-heading);
 }
-.location-row dd { margin: 0; word-break: break-word; }
+.location-row dd { margin: 0; }
+.location-row .slurl {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  display: inline-block;
+  max-width: 100%;
+}
 
 .link-list {
   list-style: none;
@@ -282,8 +306,12 @@ footer a:hover { color: var(--color-focus); }
 
 @media (max-width: 600px) {
   .hero-overlay { padding: 1.5rem 1rem; }
-  .page-nav ul { gap: 0; }
+  .page-nav ul { gap: 0; padding: 0.4rem 0.75rem; }
   .location-row { grid-template-columns: 1fr; gap: 0.15rem; padding: 0.6rem 0.85rem; }
   .location-row dt { font-size: 0.85rem; }
   main { padding: 1.25rem 1rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skip-link { transition: top 0.15s ease-out; }
 }

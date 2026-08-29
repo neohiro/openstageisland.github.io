@@ -25,54 +25,111 @@ jobs:
       - name: Verify required files
         run: |
           set -euo pipefail
+          required=(index.html assets/style.css images/destination-image.png README.md data.json LICENSE)
           missing=0
-          for f in index.html assets/style.css images/destination-image.png README.md data.json; do
+          for f in "${required[@]}"; do
             if [ ! -f "$f" ]; then
               echo "::error file=$f::Missing required file"
               missing=1
             else
-              echo "✓ $f ($(wc -c < "$f") bytes)"
+              size=$(wc -c < "$f")
+              echo "✓ $f ($size bytes)"
             fi
           done
-          [ "$missing" -eq 0 ] || { echo "Required files missing"; exit 1; }
+          [ "$missing" -eq 0 ] || { echo "One or more required files are missing"; exit 1; }
 
       - name: Validate HTML structure
         run: |
           set -euo pipefail
-          for f in $(find . -name "*.html" -not -path "./.git/*"); do
-            if ! grep -q "<!DOCTYPE html>" "$f"; then
-              echo "::error file=$f::Missing DOCTYPE"
-              exit 1
+          shopt -s globstar nullglob
+          failures=0
+          for f in **/*.html; do
+            [[ "$f" == .git/* ]] && continue
+            [[ "$f" == *".git/"* ]] && continue
+            ok=1
+            if ! grep -qi "<!doctype html>" "$f"; then
+              echo "::error file=$f::Missing <!DOCTYPE html>"
+              ok=0
             fi
-            if ! grep -q "<html " "$f"; then
-              echo "::error file=$f::Missing <html> with lang attribute"
-              exit 1
+            if ! grep -q '<html[^>]*\blang=' "$f"; then
+              echo "::error file=$f::Missing <html lang=...> attribute"
+              ok=0
             fi
-            if ! grep -q 'rel="stylesheet"' "$f"; then
-              echo "::warning file=$f::No stylesheet linked"
+            if ! grep -q '<title>[^<]*</title>' "$f"; then
+              echo "::error file=$f::Missing or empty <title>"
+              ok=0
             fi
-            echo "✓ $f passed structural checks"
+            if ! grep -q 'name="description"' "$f"; then
+              echo "::error file=$f::Missing meta description"
+              ok=0
+            fi
+            # Section balance check
+            open=$(grep -oE '<section\b' "$f" | wc -l)
+            close=$(grep -oE '</section>' "$f" | wc -l)
+            if [ "$open" -ne "$close" ]; then
+              echo "::error file=$f::Unbalanced <section> tags ($open open vs $close close)"
+              ok=0
+            fi
+            if [ "$ok" -eq 1 ]; then
+              echo "✓ $f passed structural checks"
+            else
+              failures=$((failures+1))
+            fi
           done
+          [ "$failures" -eq 0 ] || { echo "$failures HTML file(s) failed validation"; exit 1; }
 
       - name: Validate JSON
         run: |
           set -euo pipefail
-          for f in $(find . -name "*.json" -not -path "./.git/*"); do
-            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" && echo "✓ $f is valid JSON"
+          command -v python3 >/dev/null || { echo "::error::python3 is required but not found"; exit 1; }
+          shopt -s globstar nullglob
+          for f in **/*.json; do
+            [[ "$f" == .git/* ]] && continue
+            [[ "$f" == *".git/"* ]] && continue
+            python3 -c "import json,sys; json.load(open(sys.argv[1], encoding='utf-8')); print('✓ ' + sys.argv[1] + ' is valid JSON')" "$f" || exit 1
           done
 
-      - name: Validate markdown link syntax
+      - name: Validate internal links and asset references
         run: |
           set -euo pipefail
-          broken=0
-          while IFS= read -r line; do
-            # Find markdown links [text](url) — flag any with empty parens or unmatched brackets
-            if echo "$line" | grep -qE '\[[^]]*\]\(\)'; then
-              echo "::warning::Empty link target: $line"
-              broken=1
+          failures=0
+          # Extract href/src from HTML and check that local paths resolve to existing files
+          while IFS= read -r ref; do
+            # Strip query/fragment, leading/trailing quotes
+            clean="${ref%%#*}"
+            clean="${clean%%\?*}"
+            clean="${clean//\"/}"
+            [[ -z "$clean" ]] && continue
+            # Skip absolute URLs and protocol-relative
+            [[ "$clean" =~ ^https?:// ]] && continue
+            [[ "$clean" =~ ^// ]] && continue
+            [[ "$clean" =~ ^secondlife:// ]] && continue
+            [[ "$clean" =~ ^mailto: ]] && continue
+            [[ "$clean" =~ ^data: ]] && continue
+            [[ "$clean" =~ ^# ]] && continue
+            # Resolve relative to repo root
+            if [ ! -f "$clean" ] && [ ! -d "$clean" ]; then
+              echo "::warning::Broken local reference: $ref (resolves to '$clean')"
+              failures=$((failures+1))
             fi
-          done < README.md
-          echo "Markdown link syntax check complete (issues=$broken)"
+          done < <(grep -hoE '(href|src)="[^"]*"' index.html README.md | sed -E 's/^(href|src)="//; s/"$//')
+          if [ "$failures" -gt 0 ]; then
+            echo "::warning::$failures potentially broken local reference(s) (review warnings above)"
+          fi
+
+      - name: Validate README markdown link syntax
+        run: |
+          set -euo pipefail
+          issues=0
+          # Check for empty link targets [], (), or unmatched brackets
+          if grep -nE '\[[^]]*\]\(\)' README.md; then
+            echo "::error::Empty link target in README"; issues=1
+          fi
+          if grep -nE '\]\([^h)][^)]*\)' README.md | grep -v '](\.' | grep -v '](data:'; then
+            echo "::warning::Markdown link without http(s) or relative path (likely broken)"
+            issues=1
+          fi
+          [ "$issues" -eq 0 ] && echo "✓ README markdown links look valid"
 
   deploy:
     runs-on: ubuntu-24.04
