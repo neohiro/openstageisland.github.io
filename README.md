@@ -8,7 +8,7 @@
 
 ## About
 
-**Open Stage Island** is an evolving music community in Second Life, set in a beautiful natural environment where the magic is brought by you! According to the destination's public description, it has been operating since 2021 and has grown into a vibrant social hub.
+**Open Stage Island** is a free, 24/7 open-air music venue in Second Life. Any electronic music artist can take the stage and play to a live audience — no booking, no fee. According to the destination's public description, it has been operating since 2021 and has grown into a vibrant social hub.
 
 ### What Makes Open Stage Island Special?
 
@@ -73,6 +73,7 @@ You'll find your place at Open Stage Island!
 
 - **Official Destination Page:** [https://secondlife.com/destination/open-stage-island](https://secondlife.com/destination/open-stage-island)
 - **Second Life Maps:** [https://maps.secondlife.com/secondlife/Derwent/248/128/22](https://maps.secondlife.com/secondlife/Derwent/248/128/22)
+- **Join Second Life (free):** [https://join.secondlife.com/](https://join.secondlife.com/)
 
 ## About This Repository
 
