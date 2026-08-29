@@ -6,9 +6,18 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: Checkout
@@ -20,6 +29,14 @@ jobs:
           htmlhint **/*.html
         else
           echo "htmlhint not installed, skipping validation"
+        fi
+        echo "Checking HTML file exists..."
+        if [ -f "index.html" ]; then
+          echo "✓ index.html found"
+          wc -l index.html
+        else
+          echo "✗ index.html missing"
+          exit 1
         fi
     
     - name: Check image exists
@@ -38,7 +55,7 @@ jobs:
         grep -oP '(https?://[^\s)]+)' README.md | head -5
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     
@@ -50,7 +67,7 @@ jobs:
       uses: actions/configure-pages@v4
     
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v4
       with:
         path: '.'
     
