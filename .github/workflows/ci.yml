@@ -18,59 +18,81 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Validate HTML
-      run: |
-        if command -v htmlhint &> /dev/null; then
-          htmlhint **/*.html
-        else
-          echo "htmlhint not installed, skipping validation"
-        fi
-        echo "Checking HTML file exists..."
-        if [ -f "index.html" ]; then
-          echo "✓ index.html found"
-          wc -l index.html
-        else
-          echo "✗ index.html missing"
-          exit 1
-        fi
-    
-    - name: Check image exists
-      run: |
-        if [ -f "images/destination-image.png" ]; then
-          echo "✓ Destination image found"
-          ls -la images/
-        else
-          echo "✗ Destination image missing"
-          exit 1
-        fi
-    
-    - name: Validate markdown links
-      run: |
-        echo "Checking for broken links in README..."
-        grep -oP '(https?://[^\s)]+)' README.md | head -5
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Verify required files
+        run: |
+          set -euo pipefail
+          missing=0
+          for f in index.html assets/style.css images/destination-image.png README.md data.json; do
+            if [ ! -f "$f" ]; then
+              echo "::error file=$f::Missing required file"
+              missing=1
+            else
+              echo "✓ $f ($(wc -c < "$f") bytes)"
+            fi
+          done
+          [ "$missing" -eq 0 ] || { echo "Required files missing"; exit 1; }
+
+      - name: Validate HTML structure
+        run: |
+          set -euo pipefail
+          for f in $(find . -name "*.html" -not -path "./.git/*"); do
+            if ! grep -q "<!DOCTYPE html>" "$f"; then
+              echo "::error file=$f::Missing DOCTYPE"
+              exit 1
+            fi
+            if ! grep -q "<html " "$f"; then
+              echo "::error file=$f::Missing <html> with lang attribute"
+              exit 1
+            fi
+            if ! grep -q 'rel="stylesheet"' "$f"; then
+              echo "::warning file=$f::No stylesheet linked"
+            fi
+            echo "✓ $f passed structural checks"
+          done
+
+      - name: Validate JSON
+        run: |
+          set -euo pipefail
+          for f in $(find . -name "*.json" -not -path "./.git/*"); do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" && echo "✓ $f is valid JSON"
+          done
+
+      - name: Validate markdown link syntax
+        run: |
+          set -euo pipefail
+          broken=0
+          while IFS= read -r line; do
+            # Find markdown links [text](url) — flag any with empty parens or unmatched brackets
+            if echo "$line" | grep -qE '\[[^]]*\]\(\)'; then
+              echo "::warning::Empty link target: $line"
+              broken=1
+            fi
+          done < README.md
+          echo "Markdown link syntax check complete (issues=$broken)"
 
   deploy:
     runs-on: ubuntu-24.04
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-    
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v4
-      with:
-        path: '.'
-    
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

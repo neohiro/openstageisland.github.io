@@ -23,5 +23,13 @@ SOFTWARE.
 ---
 
 Note: This repository contains documentation about Open Stage Island in Second Life.
-All Second Life content, branding, and trademarks belong to Linden Research, Inc.
+
+- "Second Life" and related marks are trademarks of Linden Research, Inc.
+- The destination preview image in `images/destination-image.png` was downloaded
+  from Second Life's official destination guide (secondlife.com) for the
+  purpose of documenting and linking to the destination. All rights in the
+  image remain with its respective owner.
+- The destination description text is quoted from the public destination page
+  and is used under fair use for commentary/documentation.
+
 This documentation is provided for informational purposes only.

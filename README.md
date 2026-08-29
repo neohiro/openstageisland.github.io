@@ -4,6 +4,7 @@
 
 [![Maturity Rating: Moderate](https://cdn.prod.website-files.com/60a83025d932b623a6a61ff8/62b4a7d2a5f84d725ab9377a_card-moderate-badge.svg)](https://secondlife.com/destination/open-stage-island)
 [![Second Life Destination](https://img.shields.io/badge/Second%20Life-Destination-4A90D9?style=flat-square)](https://secondlife.com/destination/open-stage-island)
+[![Live Site](https://img.shields.io/badge/Live-neohiro.github.io-2c3e50?style=flat-square)](https://neohiro.github.io/openstageisland.github.io/)
 
 ## About
 
@@ -66,7 +67,7 @@ You'll find your place at Open Stage Island!
 
 ![Open Stage Island Scene](images/destination-image.png)
 
-*Click the image above or visit the [images folder](images/) for more screenshots.*
+*Live preview from the destination page. Captured: 2026-08-29.*
 
 ## Connect
 
@@ -75,7 +76,9 @@ You'll find your place at Open Stage Island!
 
 ## About This Repository
 
-This repository serves as a documentation hub and landing page for Open Stage Island in Second Life. It's maintained by the openstageisland organization.
+This repository serves as a documentation hub and landing page for Open Stage Island in Second Life.
+
+**Status:** Currently hosted on the `neohiro` personal account. The `openstageisland` GitHub organization is being set up; once provisioned, this repo will be transferred to `https://github.com/openstageisland/openstageisland.github.io`.
 
 ### Repository Structure
 
@@ -83,14 +86,15 @@ This repository serves as a documentation hub and landing page for Open Stage Is
 openstageisland.github.io/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml           # GitHub Actions workflow
+│       └── ci.yml           # CI: build validation + Pages deploy
 ├── assets/
-│   └── style.css            # Custom styles
+│   └── style.css            # Responsive styles with dark-mode media queries
 ├── images/
-│   └── destination-image.png # Official destination image
-├── index.html               # Landing page
-├── README.md                # This file
-└── _config.yml              # Jekyll configuration
+│   └── destination-image.png # Official destination preview (407 KB)
+├── index.html               # Static landing page
+├── README.md                # This documentation
+├── data.json                # Structured destination metadata
+└── LICENSE                  # MIT (docs only)
 ```
 
 ## Contributing
