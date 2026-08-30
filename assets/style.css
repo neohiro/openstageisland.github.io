@@ -375,6 +375,26 @@ footer p { margin: 0; font-size: 0.9rem; }
 footer a { color: #fff; }
 footer a:hover { color: var(--color-focus); }
 
+footer .footer-button-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+footer .footer-button-row a {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+footer .footer-button-row a:hover {
+  border-color: var(--color-focus);
+  color: var(--color-focus);
+}
+
 @media (max-width: 600px) {
   .hero-overlay { padding: 1.5rem 1rem; }
   .page-nav ul { gap: 0; padding: 0.4rem 0.75rem; }
