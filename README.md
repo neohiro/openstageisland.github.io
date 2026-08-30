@@ -1,5 +1,5 @@
 <!-- TEMPLATE-SHARED:HEADER -->
-{# readme-header.html â€” used as the top of every repo README.md.
+{# readme-header.html â€" used as the top of every repo README.md.
 
    Variables:
      org:    neohiro | fpm | osi | hplus
@@ -12,6 +12,16 @@
 {%- assign org_label = include.org -%}
 {%- case include.org -%}
 {%- when 'neohiro' %}{% assign org_label = 'neohiro' %}{% when 'fpm' %}{% assign org_label = 'FrenzyPenguin Media' %}{% when 'osi' %}{% assign org_label = 'Open Stage Island' %}{% when 'hplus' %}{% assign org_label = 'transhumanists' %}{% endcase -%}
+
+---
+
+> **DEPRECATED** — This repo is archived.
+> The Open Stage Island counter and docs site have moved to
+> `openstageisland/openstageisland.github.io` (GitHub org creation pending).
+> Counter slot `1631175` is reserved there. All traffic, issues, and PRs are
+> closed. See `neohiro/openstageisland.github.io` for the current embed.
+> If you have content to preserve, open an issue in
+> `openstageisland/openstageisland` before the org transfer.
 
 # {{ include.title }}
 
