@@ -1,0 +1,22 @@
+title: Open Stage Island
+description: "A free, 24/7 open-air music stage in Second Life. Any electronic music artist can take the stage and play to a live audience."
+url: "https://neohiro.github.io/openstageisland.github.io"
+baseurl: ""
+github_username: neohiro
+github_repo: openstageisland.github.io
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .github
+  - README.md
+  - LICENSE
+  - "*.ps1"
+  - "*.sh"
