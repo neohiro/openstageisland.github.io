@@ -227,6 +227,8 @@ a:hover { color: var(--color-accent-hover); text-decoration: underline; }
   max-width: var(--max-content);
   margin: 0 auto 2rem;
   padding: 1.75rem 1.75rem 1.5rem;
+  /* Fallback for browsers without color-mix() support */
+  background: var(--color-surface);
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--color-stage) 12%, var(--color-surface)),
     var(--color-surface));
@@ -380,6 +382,7 @@ footer .footer-button-row {
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: 0.6rem;
 }
 footer .footer-button-row a {
   display: inline-block;
@@ -423,8 +426,26 @@ footer .footer-button-row a:hover {
   border-radius: var(--radius);
   background: var(--color-surface-alt);
   padding: 0.75rem 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
+}
+
+/* Fade edges using pseudo-elements (better support than mask-image) */
+.glide-track::before,
+.glide-track::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.glide-track::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-surface-alt), transparent);
+}
+.glide-track::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-surface-alt), transparent);
 }
 
 .glide-rail {
