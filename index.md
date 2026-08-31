@@ -138,12 +138,10 @@ canonical: "https://neohiro.github.io/openstageisland.github.io/"
   <h2 id="network-heading">Part of the neohiro Network</h2>
   <p class="network-intro">More from <a href="https://github.com/neohiro" rel="noopener">neohiro</a> &mdash; the network that keeps the lights on at Open Stage Island.</p>
   <div align="center">
-    <a href="http://www.freevisitorcounters.com">Free Counter</a>
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1"></script>
+    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
   </div>
   <div align="center">
-    <a href="http://www.freevisitorcounters.com">Free Counter</a>
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1"></script>
+    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
   </div>
     <div class="glide-track" aria-label="Sister sites (animated)">
       <div class="glide-rail">
