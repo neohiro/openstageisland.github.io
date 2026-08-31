@@ -137,9 +137,6 @@ canonical: "https://neohiro.github.io/openstageisland.github.io/"
 <section id="neohiro-network" aria-labelledby="network-heading">
   <h2 id="network-heading">Part of the neohiro Network</h2>
   <p class="network-intro">More from <a href="https://github.com/neohiro" rel="noopener">neohiro</a> &mdash; the network that keeps the lights on at Open Stage Island.</p>
-  <div align="center">
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
-  </div>
     <div class="glide-track" aria-label="Sister sites (animated)">
       <div class="glide-rail">
         <a class="glide-card glide-card-neohiro" href="https://neohiro.github.io/" rel="noopener">
