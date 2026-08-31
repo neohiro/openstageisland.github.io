@@ -140,9 +140,6 @@ canonical: "https://neohiro.github.io/openstageisland.github.io/"
   <div align="center">
     <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
   </div>
-  <div align="center">
-    <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
-  </div>
     <div class="glide-track" aria-label="Sister sites (animated)">
       <div class="glide-rail">
         <a class="glide-card glide-card-neohiro" href="https://neohiro.github.io/" rel="noopener">
