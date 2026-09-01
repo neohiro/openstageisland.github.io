@@ -6,9 +6,6 @@
   <meta name="theme-color" content="#2c3e50" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#1a1d23" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
-  <title>{{ page.title | default: site.title }}</title>
-  <meta name="description" content="{{ page.description | default: site.description }}">
-  <meta name="author" content="openstageisland">
   <link rel="canonical" href="{{ page.canonical | default: site.url }}">
   <link rel="preload" as="image" href="{{ '/images/destination-image.png' | relative_url }}" fetchpriority="high">
   <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}">
@@ -22,7 +19,7 @@
 
   <footer role="contentinfo">
     <div align="center">
-      <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
+      <script src="https://www.freevisitorcounters.com/en/home/counter/1631175/t/1" defer></script>
     </div>
     <p>&copy; 2021&ndash;2026 Open Stage Island documentation hub</p>
     {% include footer-button-row.html org="openstageisland" %}
