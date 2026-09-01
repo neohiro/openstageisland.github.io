@@ -25,8 +25,7 @@ jobs:
       - name: Verify required files
         run: |
           set -euo pipefail
-          # Jekyll renders index.md → index.html at deploy time, so we check the source.
-          required=(index.md assets/style.css images/destination-image.png README.md data.json LICENSE)
+          required=(index.md assets/style.css images/destination-image.png README.md data.json LICENSE Gemfile)
           missing=0
           for f in "${required[@]}"; do
             if [ ! -f "$f" ]; then
@@ -44,7 +43,6 @@ jobs:
           set -euo pipefail
           shopt -s globstar nullglob
           failures=0
-          # Skip Jekyll internals (fragments, not full pages) and gh-pages build output.
           skip_dirs=( '_includes/' '_layouts/' '_site/' '.git/' )
           for f in **/*.html; do
             skip=0
@@ -69,7 +67,6 @@ jobs:
               echo "::error file=$f::Missing meta description"
               ok=0
             fi
-            # Section balance check
             open=$(grep -oE '<section\b' "$f" | wc -l)
             close=$(grep -oE '</section>' "$f" | wc -l)
             if [ "$open" -ne "$close" ]; then
@@ -99,21 +96,17 @@ jobs:
         run: |
           set -euo pipefail
           failures=0
-          # Extract href/src from HTML and check that local paths resolve to existing files
           while IFS= read -r ref; do
-            # Strip query/fragment, leading/trailing quotes
             clean="${ref%%#*}"
             clean="${clean%%\?*}"
             clean="${clean//\"/}"
             [[ -z "$clean" ]] && continue
-            # Skip absolute URLs and protocol-relative
             [[ "$clean" =~ ^https?:// ]] && continue
             [[ "$clean" =~ ^// ]] && continue
             [[ "$clean" =~ ^secondlife:// ]] && continue
             [[ "$clean" =~ ^mailto: ]] && continue
             [[ "$clean" =~ ^data: ]] && continue
             [[ "$clean" =~ ^# ]] && continue
-            # Resolve relative to repo root
             if [ ! -f "$clean" ] && [ ! -d "$clean" ]; then
               echo "::warning::Broken local reference: $ref (resolves to '$clean')"
               failures=$((failures+1))
@@ -126,12 +119,27 @@ jobs:
       - name: Validate README markdown link syntax
         run: |
           set -euo pipefail
-          # Check for empty link targets
           if grep -nE '\[[^]]*\]\(\)' README.md; then
             echo "::error::Empty link target in README"
             exit 1
           fi
           echo "✓ README markdown links look valid"
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build Jekyll site
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./_site
 
   deploy:
     runs-on: ubuntu-24.04
@@ -141,17 +149,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: '.'
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
