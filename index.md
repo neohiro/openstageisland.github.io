@@ -130,7 +130,7 @@ canonical: "https://neohiro.github.io/openstageisland.github.io/"
       <li><a href="https://secondlife.com/destination/open-stage-island" rel="noopener">Official Destination Page</a></li>
       <li><a href="https://maps.secondlife.com/secondlife/Derwent/248/128/22" rel="noopener">Second Life Maps</a></li>
       <li><a href="https://join.secondlife.com/" rel="noopener">Join Second Life (free)</a></li>
-      <li><a href="{{ '/README/' | relative_url }}">Documentation (README)</a></li>
+      <li><a href="https://github.com/neohiro/openstageisland.github.io/blob/main/README.md" rel="noopener">Documentation (README on GitHub)</a></li>
     </ul>
   </section>
 

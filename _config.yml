@@ -5,6 +5,9 @@ baseurl: ""
 github_username: neohiro
 github_repo: openstageisland.github.io
 
+plugins:
+  - jekyll-seo-tag
+
 markdown: kramdown
 kramdown:
   input: GFM
