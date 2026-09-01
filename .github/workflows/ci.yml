@@ -25,7 +25,8 @@ jobs:
       - name: Verify required files
         run: |
           set -euo pipefail
-          required=(index.html assets/style.css images/destination-image.png README.md data.json LICENSE)
+          # Jekyll renders index.md → index.html at deploy time, so we check the source.
+          required=(index.md assets/style.css images/destination-image.png README.md data.json LICENSE)
           missing=0
           for f in "${required[@]}"; do
             if [ ! -f "$f" ]; then
@@ -112,7 +113,7 @@ jobs:
               echo "::warning::Broken local reference: $ref (resolves to '$clean')"
               failures=$((failures+1))
             fi
-          done < <(grep -hoE '(href|src)="[^"]*"' index.html README.md | sed -E 's/^(href|src)="//; s/"$//')
+          done < <(grep -hoE '(href|src)="[^"]*"' README.md | sed -E 's/^(href|src)="//; s/"$//')
           if [ "$failures" -gt 0 ]; then
             echo "::warning::$failures potentially broken local reference(s) (review warnings above)"
           fi
