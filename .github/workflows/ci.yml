@@ -44,9 +44,14 @@ jobs:
           set -euo pipefail
           shopt -s globstar nullglob
           failures=0
+          # Skip Jekyll internals (fragments, not full pages) and gh-pages build output.
+          skip_dirs=( '_includes/' '_layouts/' '_site/' '.git/' )
           for f in **/*.html; do
-            [[ "$f" == .git/* ]] && continue
-            [[ "$f" == *".git/"* ]] && continue
+            skip=0
+            for d in "${skip_dirs[@]}"; do
+              [[ "$f" == "$d"* ]] && skip=1 && break
+            done
+            [ "$skip" -eq 1 ] && continue
             ok=1
             if ! grep -qi "<!doctype html>" "$f"; then
               echo "::error file=$f::Missing <!DOCTYPE html>"
