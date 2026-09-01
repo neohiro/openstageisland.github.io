@@ -25,7 +25,8 @@ jobs:
       - name: Verify required files
         run: |
           set -euo pipefail
-          required=(index.html assets/style.css images/destination-image.png README.md data.json LICENSE)
+          # Jekyll renders index.md → index.html at deploy time, so we check the source.
+          required=(index.md assets/style.css images/destination-image.png README.md data.json LICENSE)
           missing=0
           for f in "${required[@]}"; do
             if [ ! -f "$f" ]; then
@@ -43,9 +44,14 @@ jobs:
           set -euo pipefail
           shopt -s globstar nullglob
           failures=0
+          # Skip Jekyll internals (fragments, not full pages) and gh-pages build output.
+          skip_dirs=( '_includes/' '_layouts/' '_site/' '.git/' )
           for f in **/*.html; do
-            [[ "$f" == .git/* ]] && continue
-            [[ "$f" == *".git/"* ]] && continue
+            skip=0
+            for d in "${skip_dirs[@]}"; do
+              [[ "$f" == "$d"* ]] && skip=1 && break
+            done
+            [ "$skip" -eq 1 ] && continue
             ok=1
             if ! grep -qi "<!doctype html>" "$f"; then
               echo "::error file=$f::Missing <!DOCTYPE html>"
@@ -112,7 +118,7 @@ jobs:
               echo "::warning::Broken local reference: $ref (resolves to '$clean')"
               failures=$((failures+1))
             fi
-          done < <(grep -hoE '(href|src)="[^"]*"' index.html README.md | sed -E 's/^(href|src)="//; s/"$//')
+          done < <(grep -hoE '(href|src)="[^"]*"' README.md | sed -E 's/^(href|src)="//; s/"$//')
           if [ "$failures" -gt 0 ]; then
             echo "::warning::$failures potentially broken local reference(s) (review warnings above)"
           fi
