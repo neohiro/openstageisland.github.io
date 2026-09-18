@@ -79,3 +79,5 @@ Want to contribute to the venue or report an issue?
 ## License
 
 CC BY-SA 4.0 — see [LICENSE](LICENSE).
+
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=github.com%2Fneohiro%2Fopenstageisland.github.io&label=Visitors&countColor=%23263759)](https://visitorbadge.io/status?path=github.com%2Fneohiro%2Fopenstageisland.github.io)
